@@ -2,17 +2,18 @@ package com.shopping.blackfriday.entity;
 
 import java.util.Date;
 
-public class shoppingRecord {
+public class ShoppingRecord {
     private long id;
     private String userId;
     private String productName;
     private Date createTime;
 
     /*
-        shoppingRecord to Product is
+        ShoppingRecord to Product is
         many to one relationship
      */
     private Product product;
+    private int shoppingNumber;
 
     public long getId() {
         return id;
@@ -52,5 +53,13 @@ public class shoppingRecord {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public int getShoppingNumber() {
+        return shoppingNumber;
+    }
+
+    public void setShoppingNumber(int shoppingNumber) {
+        this.shoppingNumber = shoppingNumber;
     }
 }

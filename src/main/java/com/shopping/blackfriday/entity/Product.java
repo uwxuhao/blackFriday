@@ -9,6 +9,15 @@ public class Product {
     private Date endTime;
     private int inventory;
 
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getInventory() {
         return inventory;
     }
