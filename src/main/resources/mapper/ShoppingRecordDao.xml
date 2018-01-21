@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.blackfriday.dao.ShoppingRecordDao">
+    <insert id="insertShoppingRecord">
+
+        INSERT IGNORE INTO ShoppingRecord(user_id, product_id,create_time, shopping_number)
+        VALUES (#{userId}, #{productId}, #{create_time}, #{num})
+
+    </insert>
+
+
+    <select id="queryShoppingRecordByUserId" resultType="ShoppingRecord">
+
+        SELECT ShoppingRecord.product_id, user_id, create_time,
+        Product.product_id "product.product_id",
+        Product.product_name "product.product_name",
+        Product.start_time "product.start_time",
+        Product.end_time "product.end_time",
+        Product.inventory "product.inventory",
+        Product.price "product.price"
+        FROM ShoppingRecord, Product
+        WHERE ShoppingRecord.product_id = Product.product_id AND
+        ShoppingRecord.user_id = #{userId}
+
+    </select>
+
+    <select id="queryShoppingRecordByProductId" resultType="ShoppingRecord">
+
+        SELECT ShoppingRecord.product_id, user_id, create_time,
+        Product.product_id "product.product_id",
+        Product.product_name "product.product_name",
+        Product.start_time "product.start_time",
+        Product.end_time "product.end_time",
+        Product.inventory "product.inventory",
+        Product.price "product.price"
+        FROM ShoppingRecord, Product
+        WHERE ShoppingRecord.product_id = Product.product_id AND
+        ShoppingRecord.product_id = #{productId}
+
+    </select>
+
+    <select id="queryShoppingRecordByUserAndProduct" resultType="ShoppingRecord">
+
+        SELECT ShoppingRecord.product_id, user_id, create_time,
+        Product.product_id "product.product_id",
+        Product.product_name "product.product_name",
+        Product.start_time "product.start_time",
+        Product.end_time "product.end_time",
+        Product.inventory "product.inventory",
+        Product.price "product.price"
+        FROM ShoppingRecord, Product
+        WHERE ShoppingRecord.product_id = Product.product_id AND
+        ShoppingRecord.product_id = #{productId} AND ShoppingRecord.user_id = #{userId}
+
+    </select>
+
+</mapper>

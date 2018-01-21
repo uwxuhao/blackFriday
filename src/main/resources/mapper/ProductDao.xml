@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- The namespace used below is to bind the Interface -->
+
+<mapper namespace="com.shopping.blackfriday.dao.ProductDao">
+    <update id="modifyInventoryNumber">
+
+        UPDATE Product
+        SET inventory = inventory - #{num}
+        WHERE product_id = #{productId}
+        AND start_time <![CDATA[ <= ]]> #{orderTime}
+        AND end_time >= #{orderTime}
+
+    </update>
+
+
+    <select id="queryProductById" resultType="com.shopping.blackfriday.entity.Product">
+
+        SELECT product_id, product_name, start_time, end_time, inventory, price
+        FROM Product
+        WHERE product_id = #{productId}
+
+    </select>
+
+    <select id="queryAllProduct"  resultType="com.shopping.blackfriday.entity.Product">
+
+        SELECT product_id, product_name, start_time, end_time, inventory, price
+        FROM Product
+        ORDER BY product_id DESC
+
+    </select>
+
+
+</mapper>

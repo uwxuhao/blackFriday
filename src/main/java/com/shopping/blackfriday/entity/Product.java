@@ -3,19 +3,27 @@ package com.shopping.blackfriday.entity;
 import java.util.Date;
 
 public class Product {
-    private long id;
-    private String name;
+    private long productId;
+    private String productName;
     private Date startTime;
     private Date endTime;
     private int inventory;
+    private double price;
 
-
-    public long getId() {
-        return id;
+    public double getPrice() {
+        return price;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public int getInventory() {
@@ -26,12 +34,12 @@ public class Product {
         this.inventory = inventory;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Date getStartTime() {
@@ -53,10 +61,12 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", inventory=" + inventory +
+                ", price=" + price +
                 '}';
     }
 }
