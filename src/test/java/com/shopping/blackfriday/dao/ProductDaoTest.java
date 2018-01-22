@@ -38,7 +38,7 @@ public class ProductDaoTest {
 
     @Test
     public void queryAllProduct() {
-        List<Product> list = productDao.queryAllProduct();
+        List<Product> list = productDao.queryAllProducts();
         assertNotNull(list);
         System.out.println(list);
     }

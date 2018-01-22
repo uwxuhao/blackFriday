@@ -9,5 +9,5 @@ import java.util.List;
 public interface ProductDao {
     int modifyInventoryNumber(@Param("productId") long id,@Param("orderTime") Date orderTime,@Param("num") int num);
     Product queryProductById(@Param("productId") long id);
-    List<Product> queryAllProduct();
+    List<Product> queryAllProducts();
 }

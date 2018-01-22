@@ -25,7 +25,7 @@
 
     </select>
 
-    <select id="queryAllProduct"  resultType="com.shopping.blackfriday.entity.Product">
+    <select id="queryAllProducts"  resultType="com.shopping.blackfriday.entity.Product">
 
         SELECT product_id, product_name, start_time, end_time, inventory, price
         FROM Product

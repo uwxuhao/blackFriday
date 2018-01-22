@@ -14,6 +14,6 @@ public interface ProductService {
 
     ShoppingInfo getShoppingInfo(long productId);
 
-    RequestResult doShopping(long productId, long userId, String md5);
+    RequestResult doShopping(long productId, long userId, int num, String md5);
 
 }
