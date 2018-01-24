@@ -37,14 +37,15 @@ public class ProductServiceTest {
 
     @Test
     public void getShoppingInfo() {
-        ShoppingInfo shoppingInfo = productService.getShoppingInfo(1);
+        ShoppingInfo shoppingInfo = productService.getShoppingInfo(100);
         System.out.println(shoppingInfo);
     }
 
     @Test
     public void doShopping() {
-        ShoppingInfo shoppingInfo = productService.getShoppingInfo(2);
-        RequestResult requestResult = productService.doShopping(2, 1, 90, shoppingInfo.getMd5());
+        long productId=100;
+        ShoppingInfo shoppingInfo = productService.getShoppingInfo(productId);
+        RequestResult requestResult = productService.doShopping(productId, 1, 90, shoppingInfo.getMd5());
         System.out.println(requestResult);
     }
 }

@@ -27,8 +27,11 @@ public class ProductServiceImpl implements ProductService {
 
     private final String salt = "vUrWAi$glEiozmDGYjoLPTX#9aW1U3B8";
 
-    public Product getProductById(long productId) {
-        return productDao.queryProductById(productId);
+    public Product getProductById(long productId) throws NoSuchProductException {
+        Product product = productDao.queryProductById(productId);
+        if (product == null) {
+            throw new NoSuchProductException("The product id: " + productId + " dose not exist in data base ");
+        } else return product;
     }
 
     public List<Product> getAllProducts() {
@@ -37,18 +40,15 @@ public class ProductServiceImpl implements ProductService {
 
     public ShoppingInfo getShoppingInfo(long productId) throws NoSuchProductException {
         Product product = getProductById(productId);
-        if (product == null) {
-            throw new NoSuchProductException("The product id: " + productId + " dose not exist in data base ");
+        Date startTime = product.getStartTime();
+        Date endTime = product.getEndTime();
+        Date curTime = new Date();
+        if (startTime.getTime() > curTime.getTime() || endTime.getTime() < curTime.getTime()) {
+            return new ShoppingInfo(false, null, productId, curTime, startTime, endTime);
         } else {
-            Date startTime = product.getStartTime();
-            Date endTime = product.getEndTime();
-            Date curTime = new Date();
-            if (startTime.getTime() > curTime.getTime() || endTime.getTime() < curTime.getTime()) {
-                return new ShoppingInfo(false, null, productId, curTime, startTime, endTime);
-            } else {
-                return new ShoppingInfo(true, getMD5(productId), productId, curTime, startTime, endTime);
-            }
+            return new ShoppingInfo(true, getMD5(productId), productId, curTime, startTime, endTime);
         }
+
     }
 
     @Transactional
