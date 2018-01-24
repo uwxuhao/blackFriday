@@ -25,4 +25,23 @@ On each test class of Dao,
 ```
 The annotation is used to load everything for spring, MySQL and Mybatis.
 
+## Service
+Service module works between the control part and the model part. The business logic is implemented in service module. The service uses the API provided by Dao to fetch the data, provides entity instance, checks whether the request from user is valid(the order number for a product should be less than the inventory number...) and provides md5 based on the product.
+
+For the service module, the file `spring-service.xml` is created for the Spring configuration. Unlike the Dao-Spring configuration, for service,
+```xml
+<context:component-scan base-package="com.shopping.blackfriday.service"/>
+```
+`component-scan` is used to load the implementation of the beans. Because in the service module, there is a method `doShopping`, which may insert a record in the `ShoppingRecord` table, so, the `@Transactional` is needed for the method. 
+
+### Test on Service module
+For the test, because the service module will use the bean of `ProductService`, and the `ProductService` is based on Dao, so, the configuration for service and Dao is required. 
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({
+        "classpath:spring/spring-dao.xml",
+        "classpath:spring/spring-service.xml"
+})
+```
+
 
