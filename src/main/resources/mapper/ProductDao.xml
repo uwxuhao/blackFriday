@@ -13,6 +13,7 @@
         WHERE product_id = #{productId}
         AND start_time <![CDATA[ <= ]]> #{orderTime}
         AND end_time >= #{orderTime}
+        AND inventory - #{num} >= 0
 
     </update>
 

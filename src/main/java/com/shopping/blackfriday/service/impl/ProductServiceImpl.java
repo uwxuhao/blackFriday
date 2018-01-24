@@ -5,14 +5,18 @@ import com.shopping.blackfriday.dao.ShoppingRecordDao;
 import com.shopping.blackfriday.dto.RequestResult;
 import com.shopping.blackfriday.dto.ShoppingInfo;
 import com.shopping.blackfriday.entity.Product;
+import com.shopping.blackfriday.enums.ShoppingStateEnum;
 import com.shopping.blackfriday.exception.NoSuchProductException;
 import com.shopping.blackfriday.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -47,8 +51,29 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
     public RequestResult doShopping(long productId, long userId, int num, String md5) {
-        return null;
+
+        Date curTime = new Date();
+        int affectRows = productDao.modifyInventoryNumber(productId, curTime, num);
+        if (affectRows > 0) {
+            // do shopping successfully
+            shoppingRecordDao.insertShoppingRecord(userId, productId, curTime, num);
+            return new RequestResult(ShoppingStateEnum.SUCCESS);
+        } else {
+            Product product = getProductById(productId);
+            if (product.getEndTime().getTime() <= curTime.getTime()) {
+                // end time
+                return new RequestResult(ShoppingStateEnum.END);
+            } else if (md5 == null || !getMD5(productId).equals(md5)) {
+                return new RequestResult(ShoppingStateEnum.WRONG_MD5);
+            } else if (product.getInventory() < num) {
+                // not enough inventory
+                return new RequestResult(ShoppingStateEnum.NOT_ENOUGH);
+            } else {
+                return new RequestResult(ShoppingStateEnum.INNER_ERROR);
+            }
+        }
     }
 
     private String getMD5(long productId) {
