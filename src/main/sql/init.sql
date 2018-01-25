@@ -1,3 +1,20 @@
+CREATE TABLE User(
+  `user_id` BIGINT AUTO_INCREMENT,
+  `user_name` VARCHAR(64) NOT NULL UNIQUE,
+  `password` VARCHAR(64) NOT NULL,
+  `privilege` INT NOT NULL,
+  `email` VARCHAR(64) NOT NULL,
+  `balance` DOUBLE NOT NULL,
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  KEY idx_user_name(`user_name`)
+)ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8
+
+INSERT INTO User(user_id, user_name, password, privilege, email, balance, create_time, last_login)
+VALUES ("root", "default", 0, "root@uw.edu", 1000.0, '2017-01-10 00:00:00', '2017-01-10 00:00:00'),
+("customer", "default", 0, "customer@uw.edu", 1000.0, '2017-01-10 00:00:00', '2017-01-10 00:00:00');
+
 CREATE TABLE Product(
 	`product_id` BIGINT AUTO_INCREMENT,
 	`product_name` VARCHAR(64) NOT NULL,

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.blackfriday.dao.UserDao">
+
+    <resultMap id="usermap" type="User">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="privilege" property="privilege"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="email" property="email"/>
+        <result column="balance" property="balance"/>
+        <result column="create_time" property="createTime"/>
+        <result column="last_login" property="lastLoginTime"/>
+    </resultMap>
+
+    <select id="getUserById" resultMap="usermap">
+      SELECT user_id, user_name, password, privilege, email, balance, create_time, last_login
+      FROM User
+      WHERE user_id = #{userId}
+    </select>
+
+    <select id="getUserByUserName" resultMap="usermap">
+      SELECT user_id, user_name, password, privilege, email, balance, create_time, last_login
+      FROM User
+      WHERE user_name = #{userName}
+    </select>
+
+    <insert id="addNewUser" parameterType="User">
+        INSERT INTO User(user_name, password, privilege, email, balance, create_time, last_login)
+        VALUE (#{user.userName}, #{user.password}, #{user.privilege.privilege}, #{user.email}, #{user.balance}, #{user.createTime}, #{user.lastLogin})
+    </insert>
+
+    <delete id="deleteUserById">
+        DELETE FROM User
+        WHERE user_id = #{userId}
+    </delete>
+
+    <update id="updateUserInfo" parameterType="User">
+        UPDATE User
+        SET email = #{user.email}
+        WHERE user_id = #{user.userId}
+    </update>
+
+    <update id="changeUserBalance">
+        UPDATE User
+        SET balance = #{balance}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updatePasswordById">
+        Update User
+        SET password = #{password}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateUserLastLoginById">
+        Update User
+        SET last_login = #{lastLogin}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>

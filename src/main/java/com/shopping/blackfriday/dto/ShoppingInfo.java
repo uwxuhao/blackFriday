@@ -2,6 +2,7 @@ package com.shopping.blackfriday.dto;
 
 import java.util.Date;
 
+
 public class ShoppingInfo {
     private boolean isOpened;
     private String md5;
