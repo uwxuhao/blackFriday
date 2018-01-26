@@ -61,8 +61,8 @@ public class UserDaoTest {
     }
 
     @Test
-    public void changeUserBalance() {
-        userDao.changeUserBalance(1, 20000);
+    public void increaseBalance() {
+        userDao.increaseUserBalance(1, 20000);
         User user = userDao.getUserById(1);
         System.out.println(user);
     }
@@ -79,5 +79,17 @@ public class UserDaoTest {
         userDao.updateUserLastLoginById(1, new Date());
         User user = userDao.getUserById(1);
         System.out.println(user);
+    }
+
+    @Test
+    public void checkUserById() {
+        int count = userDao.checkUserById(100);
+        System.out.println(count);
+    }
+
+    @Test
+    public void checkUserByUserName() {
+        int count = userDao.checkUserByUserName("hao");
+        System.out.println(count);
     }
 }

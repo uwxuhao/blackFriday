@@ -1,5 +1,6 @@
 package com.shopping.blackfriday.service.impl;
 
+import com.shopping.blackfriday.common.Constant;
 import com.shopping.blackfriday.dao.ProductDao;
 import com.shopping.blackfriday.dao.ShoppingRecordDao;
 import com.shopping.blackfriday.dto.RequestResult;
@@ -24,8 +25,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ShoppingRecordDao shoppingRecordDao;
-
-    private final String salt = "vUrWAi$glEiozmDGYjoLPTX#9aW1U3B8";
 
     public Product getProductById(long productId) throws NoSuchProductException {
         Product product = productDao.queryProductById(productId);
@@ -77,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private String getMD5(long productId) {
-        String base = productId + "/" + salt;
+        String base = productId + "/" + Constant.SALT_URL;
         return DigestUtils.md5DigestAsHex(base.getBytes());
     }
 

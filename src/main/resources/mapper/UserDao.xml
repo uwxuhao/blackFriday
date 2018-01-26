@@ -44,9 +44,9 @@
         WHERE user_id = #{user.userId}
     </update>
 
-    <update id="changeUserBalance">
+    <update id="increaseUserBalance">
         UPDATE User
-        SET balance = #{balance}
+        SET balance = balance + #{amount}
         WHERE user_id = #{userId}
     </update>
 
@@ -61,5 +61,17 @@
         SET last_login = #{lastLogin}
         WHERE user_id = #{userId}
     </update>
+
+    <select id="checkUserById" resultType="int">
+        SELECT COUNT(*)
+        FROM User
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="checkUserByUserName" resultType="int">
+        SELECT COUNT(*)
+        FROM User
+        WHERE user_name = #{userName}
+    </select>
 
 </mapper>
