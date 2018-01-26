@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">
+        <div class="panel-heading text-center display-3">
             Product List
         </div>
 
