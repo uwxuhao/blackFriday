@@ -20,9 +20,7 @@
                 <li><a class="btn btn-default" id="loginButton"><span class="glyphicon glyphicon-log-in"></span>
                     Login</a></li>
             </ul>
-
         </div>
-
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>
@@ -47,11 +45,10 @@
                 </tbody>
             </table>
         </div>
-
     </div>
-
-
 </div>
+
+<%@include file="components/loginDialogue.jsp" %>
 
 </body>
 
@@ -61,12 +58,7 @@
 <%-- BootStrap --%>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script>
-    jQuery(document).ready(function ($) {
-        $(".clickable-row").click(function () {
-            window.location = $(this).data("href");
-        });
-    });
-</script>
+<script type="text/javascript" src="/resources/script/list.js"></script>
+<script type="text/javascript" src="/resources/script/utils.js"></script>
 
 </html>
