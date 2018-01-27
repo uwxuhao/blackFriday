@@ -40,20 +40,22 @@ var util = {
             var loginInfo = {"userName": userName.toString(), "password": password.toString()};
             var loginJson = JSON.stringify(loginInfo);
             $.ajax({
-                url: "/blackFriday/login",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: loginJson,
-                async: false,
-                cache: false,
-                processData: false,
-                success: function (serverResponse) {
+                'contentType': "application/json; charset=utf-8",
+                'url': "/blackFriday/login",
+                'type': "POST",
+                'data': loginJson,
+                'dataType': 'json',
+                'async': false,
+                'cache': false,
+                'processData': false,
+                'success': function (serverResponse) {
+                    // console.log(serverResponse['ServerResponse']);
                     var success = serverResponse['success'];
-                    console.log(success);
                     if (success) {
-
+                        window.location.reload();
                     } else {
-
+                        var message = serverResponse['message'];
+                        $('#loginMessage').hide().html('<label class="label label-danger">' + message + '</label>').show(300);
                     }
                 }
             });

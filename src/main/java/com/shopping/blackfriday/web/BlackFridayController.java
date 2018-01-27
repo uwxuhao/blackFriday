@@ -1,12 +1,10 @@
 package com.shopping.blackfriday.web;
 
-import com.shopping.blackfriday.dto.LoginInfo;
-import com.shopping.blackfriday.dto.RequestResult;
-import com.shopping.blackfriday.dto.ServerResponse;
-import com.shopping.blackfriday.dto.ShoppingInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shopping.blackfriday.dto.*;
 import com.shopping.blackfriday.entity.Product;
 import com.shopping.blackfriday.entity.User;
-import com.shopping.blackfriday.enums.ServerResponseStateEnum;
 import com.shopping.blackfriday.exception.NoSuchProductException;
 import com.shopping.blackfriday.exception.NoSuchUserException;
 import com.shopping.blackfriday.service.ProductService;
@@ -17,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -67,18 +64,34 @@ public class BlackFridayController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ServerResponse<User> login(@RequestBody LoginInfo loginInfo) {
+    public String login(@RequestBody LoginInfo loginInfo) {
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
             String userName = loginInfo.getUserName();
             String password = loginInfo.getPassword();
             boolean valid = userService.validUser(userName, password);
             if (valid) {
-                return new ServerResponse<User>(ServerResponseStateEnum.SUCCESS.getState(), "success");
+                User user = userService.getUserByUserName(userName);
+                ResponseUser responseUser = new ResponseUser(user.getUserId(), userName, user.getEmail(), user.getBalance());
+                ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(responseUser, true, "success");
+                String jsonString = objectMapper.writeValueAsString(serverResponse);
+                System.out.println(jsonString);
+                return jsonString;
             } else {
-                return new ServerResponse<User>(ServerResponseStateEnum.Fail.getState(), "Wrong password");
+                String jsonString = objectMapper.writeValueAsString(new ServerResponse<ResponseUser>(false, "Please enter the correct password"));
+                return jsonString;
             }
         } catch (NoSuchUserException e) {
-            return new ServerResponse<User>(ServerResponseStateEnum.Fail.getState(), "No such user failure");
+            try {
+                String jsonString = objectMapper.writeValueAsString(new ServerResponse<ResponseUser>(false, "No user match for user name: " + loginInfo.getUserName()));
+                return jsonString;
+            } catch (JsonProcessingException jsonException) {
+                jsonException.printStackTrace();
+                return "";
+            }
+        } catch (JsonProcessingException jsonException) {
+            jsonException.printStackTrace();
+            return "";
         }
     }
 
