@@ -105,4 +105,8 @@ public class UserServiceImpl implements UserService {
         return DigestUtils.md5DigestAsHex(base.getBytes());
     }
 
+    public void login(long userId) {
+        updateUserLastLoginById(userId, new Date());
+    }
+
 }

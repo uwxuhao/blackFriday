@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -49,22 +52,22 @@ public class BlackFridayController {
 
     @RequestMapping(value = "/{productId}/info", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ShoppingInfo getShoppingInfo(@PathVariable("productId") Long productId) {
+    public ServerResponse<ShoppingInfo> getShoppingInfo(@PathVariable("productId") Long productId) {
         ShoppingInfo shoppingInfo = productService.getShoppingInfo(productId);
-        return shoppingInfo;
+        return new ServerResponse<ShoppingInfo>(shoppingInfo, true, "successful");
     }
 
     @RequestMapping(value = "/{productId}/{userId}/{num}/{md5}/request", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RequestResult getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
+    public ServerResponse<RequestResult> getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
         RequestResult requestResult = productService.doShopping(productId, userId, requestNum, md5);
-        return requestResult;
+        return new ServerResponse<RequestResult>(requestResult, true, "success");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String login(@RequestBody LoginInfo loginInfo) {
+    public String login(@RequestBody LoginInfo loginInfo, HttpSession session) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String userName = loginInfo.getUserName();
@@ -72,10 +75,11 @@ public class BlackFridayController {
             boolean valid = userService.validUser(userName, password);
             if (valid) {
                 User user = userService.getUserByUserName(userName);
+                userService.login(user.getUserId());
+                session.setAttribute("userName", userName);
                 ResponseUser responseUser = new ResponseUser(user.getUserId(), userName, user.getEmail(), user.getBalance());
                 ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(responseUser, true, "success");
                 String jsonString = objectMapper.writeValueAsString(serverResponse);
-                System.out.println(jsonString);
                 return jsonString;
             } else {
                 String jsonString = objectMapper.writeValueAsString(new ServerResponse<ResponseUser>(false, "Please enter the correct password"));
@@ -94,5 +98,4 @@ public class BlackFridayController {
             return "";
         }
     }
-
 }

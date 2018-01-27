@@ -25,4 +25,6 @@ public interface UserService {
 
     boolean validUser(String userName, String password);
 
+    void login(long userId);
+
 }

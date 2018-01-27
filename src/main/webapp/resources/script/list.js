@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+$(window).on("load", function ($) {
     $(".clickable-row").click(function () {
         window.location = $(this).data("href");
     });
@@ -6,5 +6,4 @@ jQuery(document).ready(function ($) {
     $("#loginButton").click(function () {
         util.login(true);
     });
-
 });
