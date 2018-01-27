@@ -48,10 +48,10 @@ public class BlackFridayController {
         return shoppingInfo;
     }
 
-    @RequestMapping(value = "/{productId}/{num}/{md5}/request", method = RequestMethod.POST,
+    @RequestMapping(value = "/{productId}/{userId}/{num}/{md5}/request", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public RequestResult getRequestResult(@PathVariable("productId") Long productId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
-        RequestResult requestResult = productService.doShopping(productId, 5120309232L, requestNum, md5);
+    public RequestResult getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
+        RequestResult requestResult = productService.doShopping(productId, userId, requestNum, md5);
         return requestResult;
     }
 

@@ -18,44 +18,12 @@
     </div>
 </div>
 
-<div id="loginModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title text-center">
-                    Please Login
-                </h3>
-            </div>
+<%@include file="components/loginDialogue.jsp" %>
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <input type="text" name="userName" id="userNameInput"
-                               placeholder="User Name" class="form-control">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <input type="text" name="password" id="passwordInput"
-                               placeholder="Password" class="form-control">
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <span id="loginMessage" class="glyphicon"></span>
-                <button type="button" id="submitButton" class="btn  btn-default">
-                    <span class="glyphicon glyphicon-user"></span> Submit
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-</div>
 
 </body>
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery.countdown/2.1.0/jquery.countdown.min.js"></script>
 </html>
