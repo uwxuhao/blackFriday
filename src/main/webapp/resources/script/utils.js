@@ -11,6 +11,9 @@ var util = {
         },
         signUp: function () {
             //TODO
+        },
+        currentTime: function () {
+
         }
     },
 

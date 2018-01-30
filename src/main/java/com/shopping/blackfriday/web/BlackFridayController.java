@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,6 +25,9 @@ public class BlackFridayController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getProductList(Model model) {
@@ -46,23 +50,33 @@ public class BlackFridayController {
 
     @RequestMapping(value = "/{productId}/info", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ServerResponse<ShoppingInfo> getShoppingInfo(@PathVariable("productId") Long productId) {
+    public String getShoppingInfo(@PathVariable("productId") Long productId) {
         ShoppingInfo shoppingInfo = productService.getShoppingInfo(productId);
-        return new ServerResponse<ShoppingInfo>(shoppingInfo, true, "successful");
+        ServerResponse<ShoppingInfo> serverResponse = new ServerResponse<ShoppingInfo>(shoppingInfo, true, "success");
+        return convertResponseToString(serverResponse);
     }
 
     @RequestMapping(value = "/{productId}/{userId}/{num}/{md5}/request", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ServerResponse<RequestResult> getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
+    public String getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
         RequestResult requestResult = productService.doShopping(productId, userId, requestNum, md5);
-        return new ServerResponse<RequestResult>(requestResult, true, "success");
+        ServerResponse<RequestResult> serverResponse = new ServerResponse<RequestResult>(requestResult, true, "success");
+        return convertResponseToString(serverResponse);
+    }
+
+    @RequestMapping(value = "/currentTime", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCurrentTime() {
+        Date date = new Date();
+        long curTime = date.getTime();
+        ServerResponse<Long> serverResponse = new ServerResponse<Long>(curTime, true, "success");
+        return convertResponseToString(serverResponse);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(@RequestBody LoginInfo loginInfo, HttpSession session) {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
             String userName = loginInfo.getUserName();
             String password = loginInfo.getPassword();
@@ -71,23 +85,25 @@ public class BlackFridayController {
             if (valid) {
                 session.setAttribute("userName", userName);
                 ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(responseUser, true, "success");
-                String jsonString = objectMapper.writeValueAsString(serverResponse);
-                return jsonString;
+                return convertResponseToString(serverResponse);
             } else {
-                String jsonString = objectMapper.writeValueAsString(new ServerResponse<ResponseUser>(false, "Please enter the correct password"));
-                return jsonString;
+                ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(false, "Please enter the correct password");
+                return convertResponseToString(serverResponse);
             }
         } catch (NoSuchUserException e) {
-            try {
-                String jsonString = objectMapper.writeValueAsString(new ServerResponse<ResponseUser>(false, "No user match for user name: " + loginInfo.getUserName()));
-                return jsonString;
-            } catch (JsonProcessingException jsonException) {
-                jsonException.printStackTrace();
-                return "";
-            }
-        } catch (JsonProcessingException jsonException) {
-            jsonException.printStackTrace();
-            return "";
+            ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(false, "No user match for user name: " + loginInfo.getUserName());
+            return convertResponseToString(serverResponse);
         }
     }
+
+    private String convertResponseToString(ServerResponse<?> serverResponse) {
+        try {
+            String jsonString = objectMapper.writeValueAsString(serverResponse);
+            return jsonString;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "json convert error";
+    }
+
 }

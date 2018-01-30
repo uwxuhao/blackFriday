@@ -24,18 +24,16 @@
 <%
     HttpSession httpSession = request.getSession(false);
     String userName = (String) httpSession.getAttribute("userName");
-    System.out.println(userName);
 %>
 
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/script/utils.js"></script>
 
 <script type="text/javascript">
-    $(window).on("load", function () {
-        var cancelButton = $("#cancelButton");
+    jQuery(window).on("load", function () {
+        var cancelButton = jQuery("#cancelButton");
         cancelButton.hide();
         var login = "${userName}";
-        console.log(login.length);
         if (login.length === 0) {
             util.login(false);
         }
