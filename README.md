@@ -48,5 +48,33 @@ For the test, because the service module will use the bean of `ProductService`, 
 })
 ```
 ## Web
+The web module is composed of 3 parts. Controller, JSP and JavaScript. 
 
-
+In `web.xml`, the dispatcher servlet is configured. 
+```xml
+<servlet>
+        <servlet-name>main-dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- Load all the spring configuration files -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/*.xml</param-value>
+        </init-param>
+</servlet>
+```
+It will load all the spring configuration for the dispatcher servlet, and map all the links to this servlet.   
+The configuration in file `spring-web.xml` will let the container to scan `com.shopping.blackfriday.web`, where the controller class is defined.  
+For the Controller, 2 annotations are needed.
+```java
+@Controller
+@RequestMapping("/blackFriday")
+```
+The _@Controller_ will tell the container that the `BlackFridayController` is a bean needs to inject. The _@RequestMapping_ gives part of the URL to send request to the controller. When the controller receives a request, it will call one of the function to deal with that request according to the URL. The URL _/blackFriday/list_ and the _/blackFriday/{productId}/detail_ will return JSP to the client. The `Model` can be used to share variables between the controller and the JSP.  
+For other functions, they will return a JSON. To return JSON, _@ResponseBody_ is needed. `public String login(@RequestBody LoginInfo loginInfo, HttpSession session)` will get the login information provided by the client which containing user name and password. It will call the `UserService` bean to check the validation of the user information. If the information is valid, the user name will be put into `HttpSession`. `ServerResponse` class is used for the return JSON information of each function in the controller. The `ServerResponse` has 3 fields:
+```java
+private T data;
+private boolean success;
+private String message;
+```
+The `data` contains the concrete object that will be return to the client. `success` indicates whether the request if valid. `message` will contains the information for the fail of the request.  
+When the `ServerResponse` instance is created, a `ObjectMapper`, which is from _com.fasterxml.jackson_ will be used to convert the instance into a JSON string. Then the string will be returned. 
