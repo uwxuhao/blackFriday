@@ -1,9 +1,9 @@
-$(window).on("load", function ($) {
-    $(".clickable-row").click(function () {
-        window.location = $(this).data("href");
+jQuery(window).on("load", function () {
+    jQuery(".clickable-row").click(function () {
+        window.location = jQuery(this).data("href");
     });
 
-    $("#loginButton").click(function () {
+    jQuery("#loginButton").click(function () {
         util.login(true);
     });
 });

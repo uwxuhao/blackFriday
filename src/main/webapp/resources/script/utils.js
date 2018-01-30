@@ -19,7 +19,7 @@ var util = {
     },
 
     login: function (mainPage) {
-        var loginModal = $("#loginModal");
+        var loginModal = jQuery("#loginModal");
         if (mainPage) {
             loginModal.modal({
                 show: true,
@@ -34,12 +34,12 @@ var util = {
                 keyboard: false
             });
         }
-        $("#submitButton").click(function () {
-            var userName = $("#userNameInput").val();
-            var password = $("#passwordInput").val();
+        jQuery("#submitButton").click(function () {
+            var userName = jQuery("#userNameInput").val();
+            var password = jQuery("#passwordInput").val();
             var loginInfo = {"userName": userName.toString(), "password": password.toString()};
             var loginJson = JSON.stringify(loginInfo);
-            $.ajax({
+            jQuery.ajax({
                 'contentType': "application/json; charset=utf-8",
                 'url': "/blackFriday/login",
                 'type': "POST",
@@ -55,7 +55,7 @@ var util = {
                         window.location.reload();
                     } else {
                         var message = serverResponse['message'];
-                        $('#loginMessage').hide().html('<label class="label label-danger">' + message + '</label>').show(300);
+                        jQuery('#loginMessage').hide().html('<label class="label label-danger">' + message + '</label>').show(300);
                     }
                 }
             });
