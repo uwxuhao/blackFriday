@@ -81,9 +81,5 @@ public class UserServiceTest {
         userService.updateUserLastLoginById(4, new Date());
     }
 
-    @Test
-    public void validUser() {
-        boolean res = userService.validUser("admin", "admin");
-        System.out.println(res);
-    }
+
 }

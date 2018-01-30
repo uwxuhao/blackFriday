@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopping.blackfriday.dto.*;
 import com.shopping.blackfriday.entity.Product;
-import com.shopping.blackfriday.entity.User;
 import com.shopping.blackfriday.exception.NoSuchProductException;
 import com.shopping.blackfriday.exception.NoSuchUserException;
 import com.shopping.blackfriday.service.ProductService;
@@ -15,13 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@EnableWebMvc
 @RequestMapping("/blackFriday")
 public class BlackFridayController {
     @Autowired
@@ -32,7 +28,6 @@ public class BlackFridayController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getProductList(Model model) {
-        System.out.println("get into list");
         List<Product> list = productService.getAllProducts();
         model.addAttribute("list", list);
         return "list";
@@ -72,12 +67,10 @@ public class BlackFridayController {
         try {
             String userName = loginInfo.getUserName();
             String password = loginInfo.getPassword();
-            boolean valid = userService.validUser(userName, password);
+            ResponseUser responseUser = userService.login(userName, password);
+            boolean valid = responseUser.isLoginSuccess();
             if (valid) {
-                User user = userService.getUserByUserName(userName);
-                userService.login(user.getUserId());
                 session.setAttribute("userName", userName);
-                ResponseUser responseUser = new ResponseUser(user.getUserId(), userName, user.getEmail(), user.getBalance());
                 ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(responseUser, true, "success");
                 String jsonString = objectMapper.writeValueAsString(serverResponse);
                 return jsonString;

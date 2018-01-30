@@ -2,6 +2,7 @@ package com.shopping.blackfriday.service.impl;
 
 import com.shopping.blackfriday.common.Constant;
 import com.shopping.blackfriday.dao.UserDao;
+import com.shopping.blackfriday.dto.ResponseUser;
 import com.shopping.blackfriday.entity.User;
 import com.shopping.blackfriday.exception.NoSuchUserException;
 import com.shopping.blackfriday.exception.UserIdAlreadyExistException;
@@ -26,13 +27,13 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public User getUserByUserName(String userName) {
+    public User getUserByUserName(String userName) throws NoSuchUserException {
         User user = userDao.getUserByUserName(userName);
         if (user == null) throw new NoSuchUserException("The user name: " + userName + " dose not exist in data base ");
         return user;
     }
 
-    public void addNewUser(User user) {
+    public void addNewUser(User user) throws UserIdAlreadyExistException, UserNameAlreadyExistException {
         long userId = user.getUserId();
         String userName = user.getUserName();
         int count = userDao.checkUserById(userId);
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
         userDao.updateUserLastLoginById(userId, date);
     }
 
-    public boolean validUser(String userName, String password) {
+    private boolean validUser(String userName, String password) throws NoSuchUserException {
         User user = getUserByUserName(userName);
         String md5Password = getMD5(user.getUserId(), password);
         if (md5Password.equals(user.getPassword())) return true;
@@ -105,8 +106,16 @@ public class UserServiceImpl implements UserService {
         return DigestUtils.md5DigestAsHex(base.getBytes());
     }
 
-    public void login(long userId) {
+    public void setLastLoginToCurTime(long userId) {
         updateUserLastLoginById(userId, new Date());
     }
 
+    public ResponseUser login(String userName, String password) throws NoSuchUserException {
+        boolean valid = validUser(userName, password);
+        if (!valid) return new ResponseUser(false);
+        User user = getUserByUserName(userName);
+        setLastLoginToCurTime(user.getUserId());
+        ResponseUser responseUser = new ResponseUser(true, user.getUserId(), userName, user.getEmail(), user.getBalance());
+        return responseUser;
+    }
 }

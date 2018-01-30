@@ -54,24 +54,26 @@ public class ProductServiceImpl implements ProductService {
     public RequestResult doShopping(long productId, long userId, int num, String md5) {
 
         Date curTime = new Date();
+        Product product = getProductById(productId);
+
+        if (product.getEndTime().getTime() <= curTime.getTime()) {
+            // end time
+            return new RequestResult(ShoppingStateEnum.END);
+        } else if (md5 == null || !getMD5(productId).equals(md5)) {
+            return new RequestResult(ShoppingStateEnum.WRONG_MD5);
+        } else if (product.getInventory() < num) {
+            // not enough inventory
+            return new RequestResult(ShoppingStateEnum.NOT_ENOUGH);
+        }
+
         int affectRows = productDao.modifyInventoryNumber(productId, curTime, num);
+
         if (affectRows > 0) {
             // do shopping successfully
             shoppingRecordDao.insertShoppingRecord(userId, productId, curTime, num);
             return new RequestResult(ShoppingStateEnum.SUCCESS);
         } else {
-            Product product = getProductById(productId);
-            if (product.getEndTime().getTime() <= curTime.getTime()) {
-                // end time
-                return new RequestResult(ShoppingStateEnum.END);
-            } else if (md5 == null || !getMD5(productId).equals(md5)) {
-                return new RequestResult(ShoppingStateEnum.WRONG_MD5);
-            } else if (product.getInventory() < num) {
-                // not enough inventory
-                return new RequestResult(ShoppingStateEnum.NOT_ENOUGH);
-            } else {
-                return new RequestResult(ShoppingStateEnum.INNER_ERROR);
-            }
+            return new RequestResult(ShoppingStateEnum.INNER_ERROR);
         }
     }
 

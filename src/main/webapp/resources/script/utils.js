@@ -19,10 +19,8 @@ var util = {
     },
 
     login: function (mainPage) {
-        console.log("in login");
         var loginModal = $("#loginModal");
         if (mainPage) {
-            console.log("true");
             loginModal.modal({
                 show: true,
                 backdrop: true,
@@ -30,7 +28,6 @@ var util = {
             });
         }
         else {
-            console.log("false");
             loginModal.modal({
                 show: true,
                 backdrop: 'static',

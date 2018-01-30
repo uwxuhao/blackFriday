@@ -4,16 +4,27 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ResponseUser implements Serializable {
+    private boolean loginSuccess;
     private long userId;
     private String userName;
     private String email;
     private double balance;
 
-    public ResponseUser(long userId, String userName, String email, double balance) {
+
+    public ResponseUser(boolean loginSuccess) {
+        this.loginSuccess = loginSuccess;
+    }
+
+    public ResponseUser(boolean loginSuccess, long userId, String userName, String email, double balance) {
+        this.loginSuccess = loginSuccess;
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.balance = balance;
+    }
+
+    public boolean isLoginSuccess() {
+        return loginSuccess;
     }
 
     public long getUserId() {

@@ -4,7 +4,7 @@ Technology: Spring + SpringMVC + Mybatis, MySQL, Maven, JQuery
 Inspired by [@geekyijun](https://github.com/geekyijun/seckill)
 
 ## Entity
-The class in Entity is used to represent the tuple in the database. For now, two entity classes are implemented. The `Product` is used to represent the products that customers can buy. The `shoppingRecord` is used to represent the shopping record created by each shopping operation.
+The class in Entity is used to represent the tuple in the database. For now, two entity classes are implemented. The `Product` is used to represent the products that customers can buy. The `ShoppingRecord` is used to represent the shopping record created by each shopping operation. The `User` is used to represent a uesr.
 
 ## Dao
 The interface in Dao is interface between Java and data base. `ProductDao` is used to modify the number of products and fetch the information of products. `ShoppingRecordDao` is used to insert Shopping records into data base and fetch the records. 
@@ -28,6 +28,10 @@ The annotation is used to load everything for spring, MySQL and Mybatis.
 ## Service
 Service module works between the control part and the model part. The business logic is implemented in service module. The service uses the API provided by Dao to fetch the data, provides entity instance, checks whether the request from user is valid(the order number for a product should be less than the inventory number...) and provides md5 based on the product.
 
+There are two service in the project.   
+`ProductService` is the service to provide and modify `Product`. `Product getProductById(long productId)` can provide a `Product` instance. `ShoppingInfo getShoppingInfo(long productId)` provides a `ShoppingInfo` instance. The `ShoppingInfo` contains the `productId` of a `Product`. It also contains all the information that is necessary for the `Product` to be used at web module. The `ShoppingInfo` contains the md5 of a product. The md5 can be used as part of the link to order the product. If the md5 is wrong in the link, then the request of the product will fail.  
+`UserService` is the service to provide the `User` instance and modify the user information. For the `ResponseUser login(String userName, String password)`, it will first check whether the the `userName` and `password` is valid. Then update the last login time of the user, and send an object `ResponseUser` which containing the information(exclude password and other secret information) of the user.
+
 For the service module, the file `spring-service.xml` is created for the Spring configuration. Unlike the Dao-Spring configuration, for service,
 ```xml
 <context:component-scan base-package="com.shopping.blackfriday.service"/>
@@ -43,5 +47,6 @@ For the test, because the service module will use the bean of `ProductService`, 
         "classpath:spring/spring-service.xml"
 })
 ```
+## Web
 
 
