@@ -65,7 +65,7 @@ public class BlackFridayController {
         return convertResponseToString(serverResponse);
     }
 
-    @RequestMapping(value = "/currentTime", method = RequestMethod.POST)
+    @RequestMapping(value = "/currentTime", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getCurrentTime() {
         Date date = new Date();

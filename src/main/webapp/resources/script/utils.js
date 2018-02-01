@@ -3,17 +3,17 @@ var util = {
         doShopping: function () {
             //TODO
         },
-        getInfo: function () {
-            //TODO
-        },
         login: function () {
-            //TODO
+            return "/blackFriday/login";
+        },
+        getInfo: function (productId) {
+            return "/blackFriday/" + productId + "/info"
         },
         signUp: function () {
             //TODO
         },
         currentTime: function () {
-
+            return "/blackFriday/currentTime";
         }
     },
 
@@ -44,7 +44,7 @@ var util = {
             var loginJson = JSON.stringify(loginInfo);
             jQuery.ajax({
                 'contentType': "application/json; charset=utf-8",
-                'url': "/blackFriday/login",
+                'url': util.url.login(),
                 'type': "POST",
                 'data': loginJson,
                 'dataType': 'json',
@@ -52,7 +52,6 @@ var util = {
                 'cache': false,
                 'processData': false,
                 'success': function (serverResponse) {
-                    // console.log(serverResponse['ServerResponse']);
                     var success = serverResponse['success'];
                     if (success) {
                         window.location.reload();
@@ -63,6 +62,25 @@ var util = {
                 }
             });
         });
+    },
+
+    getCurrentTime: function () {
+        var currentTime = null;
+        jQuery.ajax({
+            'contentType': "application/json; charset=utf-8",
+            'url': util.url.currentTime(),
+            'type': "POST",
+            'async': false,
+            'cache': false,
+            'processData': false,
+            'success': function (serverResponse) {
+                var success = serverResponse['success'];
+                if (success) {
+                    currentTime = serverResponse['data'];
+                }
+            }
+        });
+        return currentTime;
     }
 
 };

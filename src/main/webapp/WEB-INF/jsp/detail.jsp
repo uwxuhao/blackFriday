@@ -4,7 +4,7 @@
 <head>
     <title>${product.productName}</title>
     <%@include file="common/head.jsp" %>
-    <%@include file="components/init.jsp"%>
+    <%@include file="components/init.jsp" %>
 </head>
 <body>
 
@@ -16,12 +16,14 @@
         <div class="panel-heading text-center display-3">
             <h1>${product.productName}</h1>
         </div>
+
         <div class="panel-body">
             <h2 class="text-danger">
                 <span class="glyphicon glyphicon-time"></span>
                 <span class="glyphicon" id="countdown-box">placeholder</span>
             </h2>
         </div>
+
     </div>
 </div>
 
@@ -40,7 +42,12 @@
         if (login.length === 0) {
             util.login(false);
         }
-
+        else {
+            var startTime = parseInt("${product.startTime}");
+            var endTime = parseInt("${product.endTime}");
+            var productId = parseInt("${product.productId}");
+            init(productId, startTime, endTime);
+        }
     });
 </script>
 
