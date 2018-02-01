@@ -4,27 +4,30 @@
 <head>
     <title>${product.productName}</title>
     <%@include file="common/head.jsp" %>
+    <%@include file="components/init.jsp"%>
 </head>
 <body>
+
 <div class="container">
-    <div class="panel-heading text-center display-3">
-        <h1>${product.productName}</h1>
-    </div>
-    <div class="panel-body">
-        <h2 class="text-danger">
-            <span class="glyphicon glyphicon-time"></span>
-            <span class="glyphicon" id="countdown-box">placeholder</span>
-        </h2>
+    <div class="panel panel-default">
+
+        <%@include file="components/navbar.jsp" %>
+
+        <div class="panel-heading text-center display-3">
+            <h1>${product.productName}</h1>
+        </div>
+        <div class="panel-body">
+            <h2 class="text-danger">
+                <span class="glyphicon glyphicon-time"></span>
+                <span class="glyphicon" id="countdown-box">placeholder</span>
+            </h2>
+        </div>
     </div>
 </div>
 
 
 <%@include file="components/loginDialogue.jsp" %>
 
-<%
-    HttpSession httpSession = request.getSession(false);
-    String userName = (String) httpSession.getAttribute("userName");
-%>
 
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/script/utils.js"></script>
@@ -37,6 +40,7 @@
         if (login.length === 0) {
             util.login(false);
         }
+
     });
 </script>
 

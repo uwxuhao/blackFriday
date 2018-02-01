@@ -4,50 +4,14 @@
 <head>
     <title>Black Friday Shopping</title>
     <%@include file="common/head.jsp" %>
+    <%@include file="components/init.jsp"%>
 </head>
 <body>
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading nav navbar-default">
-            <div class="navbar-header">
-                <img src="/resources/images/logo/blackFridayLogo.png">
-            </div>
-            <%
-                HttpSession httpSession = request.getSession(false);
-                String userName = (String) httpSession.getAttribute("userName");
-                System.out.println(userName);
-            %>
-            <ul class="nav navbar-nav navbar-right">
-                <c:choose>
-                    <c:when test="${empty userName}">
-                        <li>
-                            <a class="btn btn-default" id="signUpButton">
-                                <span class="glyphicon glyphicon-user"></span>
-                                Sign Up
-                            </a>
-                        </li>
-                        <li>&nbsp&nbsp</li>
-                        <li>
-                            <a class="btn btn-default" id="loginButton">
-                                <span class="glyphicon glyphicon-log-in"></span>
-                                Login
-                            </a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li>
-                            <a href="#">${userName}</a>
-                        </li>
-                        <li>
-                            <a href="#">Order</a>
-                        </li>
-                        <li>
-                            <a href="#">Cart</a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-        </div>
+
+        <%@include file="components/navbar.jsp" %>
+
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>
