@@ -58,12 +58,12 @@ public class ProductServiceImpl implements ProductService {
 
         if (product.getEndTime().getTime() <= curTime.getTime()) {
             // end time
-            return new RequestResult(ShoppingStateEnum.END);
+            return new RequestResult(ShoppingStateEnum.END.getStateInfo());
         } else if (md5 == null || !getMD5(productId).equals(md5)) {
-            return new RequestResult(ShoppingStateEnum.WRONG_MD5);
+            return new RequestResult(ShoppingStateEnum.WRONG_MD5.getStateInfo());
         } else if (product.getInventory() < num) {
             // not enough inventory
-            return new RequestResult(ShoppingStateEnum.NOT_ENOUGH);
+            return new RequestResult(ShoppingStateEnum.NOT_ENOUGH.getStateInfo());
         }
 
         int affectRows = productDao.modifyInventoryNumber(productId, curTime, num);
@@ -71,9 +71,9 @@ public class ProductServiceImpl implements ProductService {
         if (affectRows > 0) {
             // do shopping successfully
             shoppingRecordDao.insertShoppingRecord(userId, productId, curTime, num);
-            return new RequestResult(ShoppingStateEnum.SUCCESS);
+            return new RequestResult(ShoppingStateEnum.SUCCESS.getStateInfo());
         } else {
-            return new RequestResult(ShoppingStateEnum.INNER_ERROR);
+            return new RequestResult(ShoppingStateEnum.INNER_ERROR.getStateInfo());
         }
     }
 

@@ -1,7 +1,7 @@
 var util = {
     url: {
-        doShopping: function () {
-            //TODO
+        productRequest: function () {
+            return "/blackFriday/request";
         },
         login: function () {
             return "/blackFriday/login";
@@ -81,6 +81,40 @@ var util = {
             }
         });
         return currentTime;
+    },
+
+    sendProductRequest: function (productId, userId, num, md5) {
+        var requestResult = null;
+        var requestInfo = {
+            "productId": productId.toString(),
+            "userId": userId.toString(),
+            "num": num.toString(),
+            "md5": md5
+        };
+        var requestJson = JSON.stringify(requestInfo);
+        jQuery.ajax({
+            'contentType': "application/json; charset=utf-8",
+            'url': util.url.productRequest(),
+            'type': "POST",
+            'data': requestJson,
+            'dataType': 'json',
+            'async': false,
+            'cache': false,
+            'processData': false,
+            'success': function (serverResponse) {
+                console.log(serverResponse);
+                var success = serverResponse['success'];
+                if (success) {
+                    var data = serverResponse['data'];
+                    requestResult = data['state'];
+                }
+            },
+            'error': function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus);
+                alert("Error: " + errorThrown);
+            }
+        });
+        return requestResult;
     }
 
 };

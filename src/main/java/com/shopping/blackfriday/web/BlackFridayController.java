@@ -56,11 +56,15 @@ public class BlackFridayController {
         return convertResponseToString(serverResponse);
     }
 
-    @RequestMapping(value = "/{productId}/{userId}/{num}/{md5}/request", method = RequestMethod.POST,
+    @RequestMapping(value = "/request", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String getRequestResult(@PathVariable("productId") Long productId, @PathVariable("userId") long userId, @PathVariable("num") int requestNum, @PathVariable("md5") String md5) {
-        RequestResult requestResult = productService.doShopping(productId, userId, requestNum, md5);
+    public String getRequestResult(@RequestBody RequestInfo requestInfo) {
+        long productId = requestInfo.getProductId();
+        long userId = requestInfo.getUserId();
+        int num = requestInfo.getNum();
+        String md5 = requestInfo.getMd5();
+        RequestResult requestResult = productService.doShopping(productId, userId, num, md5);
         ServerResponse<RequestResult> serverResponse = new ServerResponse<RequestResult>(requestResult, true, "success");
         return convertResponseToString(serverResponse);
     }
@@ -83,7 +87,9 @@ public class BlackFridayController {
             ResponseUser responseUser = userService.login(userName, password);
             boolean valid = responseUser.isLoginSuccess();
             if (valid) {
+                long userId = responseUser.getUserId();
                 session.setAttribute("userName", userName);
+                session.setAttribute("userId", userId);
                 ServerResponse<ResponseUser> serverResponse = new ServerResponse<ResponseUser>(responseUser, true, "success");
                 return convertResponseToString(serverResponse);
             } else {

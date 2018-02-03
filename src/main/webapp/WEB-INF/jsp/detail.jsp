@@ -18,7 +18,6 @@
         </div>
 
 
-
         <div class="panel-body">
             <h2 class="text-danger text-center">
                 <span class="glyphicon glyphicon-time"></span>
@@ -33,7 +32,6 @@
 <%@include file="components/loginDialogue.jsp" %>
 
 
-
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/script/utils.js"></script>
 
@@ -41,15 +39,16 @@
     jQuery(window).on("load", function () {
         var cancelButton = jQuery("#cancelButton");
         cancelButton.hide();
-        var login = "${userName}";
-        if (login.length === 0) {
+        var userName = "${userName}";
+        var userId = parseInt("${userId}");
+        if (userName.length === 0) {
             util.login(false);
         }
         else {
             var startTime = parseInt("${product.startTime.getTime()}");
             var endTime = parseInt("${product.endTime.getTime()}");
             var productId = parseInt("${product.productId}");
-            init(productId, startTime, endTime);
+            init(productId, startTime, endTime, userId);
         }
     });
 </script>

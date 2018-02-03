@@ -1,11 +1,13 @@
 package com.shopping.blackfriday.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum ShoppingStateEnum {
-    SUCCESS(1, "success"),
-    END(2, "end"),
-    NOT_ENOUGH(3, "not enough inventory"),
-    WRONG_MD5(4, "wrong md5"),
-    INNER_ERROR(5, "inner error");
+    SUCCESS(1, "SUCCESS"),
+    END(2, "END"),
+    NOT_ENOUGH(3, "NOT_ENOUGH"),
+    WRONG_MD5(4, "WRONG_MD5"),
+    INNER_ERROR(5, "INNER_ERROR");
     private int state;
     private String stateInfo;
 

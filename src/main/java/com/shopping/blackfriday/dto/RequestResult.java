@@ -1,13 +1,18 @@
 package com.shopping.blackfriday.dto;
 
-import com.shopping.blackfriday.enums.ShoppingStateEnum;
-
-import java.util.Date;
 
 public class RequestResult {
-    private ShoppingStateEnum state;
+    private String state;
 
-    public RequestResult(ShoppingStateEnum state) {
+    public RequestResult(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
         this.state = state;
     }
 
