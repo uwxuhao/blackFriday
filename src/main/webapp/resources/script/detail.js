@@ -1,7 +1,6 @@
 function init(productId, startTime, endTime) {
     var currentTime = util.getCurrentTime();
-    console.log("currentTime: " + currentTime);
-    // countDown(productId, currentTime, startTime, endTime);
+    countDown(productId, currentTime, startTime, endTime);
 }
 
 
@@ -20,7 +19,7 @@ function setButton(productId, countDownBox) {
             var md5 = data['md5'];
             if (success) {
                 var shopButton = jQuery("#shopButton");
-                console.log("md5: " + md5);
+                countDownBox.show();
             }
         }
     });
@@ -32,7 +31,8 @@ function countDown(productId, currentTime, startTime, endTime) {
         countDownBox.html('End');
     } else if (currentTime < startTime) {
         var startDate = new Date(startTime);
-        countDownBox.countDown(startDate, function (event) {
+        console.log(startDate);
+        countDownBox.countdown(startDate, function (event) {
             var format = event.strftime('Count Down：%D day %H hour %M minute %S second');
             countDownBox.html(format);
         }).on('finish.countdown', function () {

@@ -17,8 +17,10 @@
             <h1>${product.productName}</h1>
         </div>
 
+
+
         <div class="panel-body">
-            <h2 class="text-danger">
+            <h2 class="text-danger text-center">
                 <span class="glyphicon glyphicon-time"></span>
                 <span class="glyphicon" id="countdown-box">placeholder</span>
             </h2>
@@ -29,6 +31,7 @@
 
 
 <%@include file="components/loginDialogue.jsp" %>
+
 
 
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
@@ -43,8 +46,8 @@
             util.login(false);
         }
         else {
-            var startTime = parseInt("${product.startTime}");
-            var endTime = parseInt("${product.endTime}");
+            var startTime = parseInt("${product.startTime.getTime()}");
+            var endTime = parseInt("${product.endTime.getTime()}");
             var productId = parseInt("${product.productId}");
             init(productId, startTime, endTime);
         }
